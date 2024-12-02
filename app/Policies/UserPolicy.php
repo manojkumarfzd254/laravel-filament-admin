@@ -16,10 +16,10 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    // public function viewAny(User $user): bool
-    // {
-    //     return $user->can('{{ ViewAny }}');
-    // }
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_user');
+    }
 
     /**
      * Determine whether the user can view the model.
@@ -71,10 +71,10 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    // public function deleteAny(User $user): bool
-    // {
-    //     return $user->can('{{ DeleteAny }}');
-    // }
+    public function deleteAny(User $user): bool
+    {
+        return $user->can('delete_any_user');
+    }
 
     /**
      * Determine whether the user can permanently delete.
@@ -82,10 +82,10 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    // public function forceDelete(User $user): bool
-    // {
-    //     return $user->can('{{ ForceDelete }}');
-    // }
+    public function forceDelete(User $user): bool
+    {
+        return $user->can('force_delete_user');
+    }
 
     /**
      * Determine whether the user can permanently bulk delete.
@@ -93,10 +93,10 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    // public function forceDeleteAny(User $user): bool
-    // {
-    //     return $user->can('{{ ForceDeleteAny }}');
-    // }
+    public function forceDeleteAny(User $user): bool
+    {
+        return $user->can('force_delete_any_user');
+    }
 
     /**
      * Determine whether the user can restore.
@@ -104,10 +104,10 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    // public function restore(User $user): bool
-    // {
-    //     return $user->can('{{ Restore }}');
-    // }
+    public function restore(User $user): bool
+    {
+        return $user->can('restore_user');
+    }
 
     /**
      * Determine whether the user can bulk restore.
@@ -115,10 +115,10 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    // public function restoreAny(User $user): bool
-    // {
-    //     return $user->can('{{ RestoreAny }}');
-    // }
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_user');
+    }
 
     /**
      * Determine whether the user can bulk restore.
@@ -126,10 +126,10 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    // public function replicate(User $user): bool
-    // {
-    //     return $user->can('{{ Replicate }}');
-    // }
+    public function replicate(User $user): bool
+    {
+        return $user->can('replicate_user');
+    }
 
     /**
      * Determine whether the user can reorder.
@@ -137,8 +137,8 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    // public function reorder(User $user): bool
-    // {
-    //     return $user->can('{{ Reorder }}');
-    // }
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_user');
+    }
 }

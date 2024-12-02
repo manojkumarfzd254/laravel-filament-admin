@@ -23,18 +23,18 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationGroup = 'User Management';
 
-    public static function getPermissionPrefixes(): array
-    {
-        return [
-            'view',
-            // 'view_any',
-            'create',
-            'update',
-            'delete',
-            // 'delete_any',
-            // 'publish'
-        ];
-    }
+    // public static function getPermissionPrefixes(): array
+    // {
+    //     return [
+    //         'view',
+    //         // 'view_any',
+    //         'create',
+    //         'update',
+    //         'delete',
+    //         // 'delete_any',
+    //         // 'publish'
+    //     ];
+    // }
     public static function form(Form $form): Form
     {
         return $form
