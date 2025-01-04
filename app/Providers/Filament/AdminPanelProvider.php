@@ -35,9 +35,12 @@ class AdminPanelProvider extends PanelProvider
             ->emailVerification()
             ->profile()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::hex('#7c3aed'),
             ])
             ->sidebarWidth('14rem')
+            ->brandName('Parts Zone Spare')
+            ->brandLogo(asset('brand_logo.jpeg'))
+            ->brandLogoHeight('4rem')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

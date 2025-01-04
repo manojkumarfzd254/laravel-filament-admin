@@ -122,7 +122,7 @@ class ProductResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('mrp')
                     ->numeric()
-                    ->prefix('')
+                    ->money('INR')
                     ->sortable(),
                 // Tables\Columns\TextColumn::make('selling_price')
                 //     ->numeric()
