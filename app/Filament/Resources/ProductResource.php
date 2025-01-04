@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Models\BikeName;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
@@ -88,6 +89,11 @@ class ProductResource extends Resource
                                                 ->searchable()
                                                 ->preload()
                                                 ->required(),
+                                            Forms\Components\Select::make('compatible_bike_ids')
+                                                ->label('Compatible Bikes')
+                                                ->options(BikeName::where('status',1)->get()->pluck('name', 'id'))
+                                                ->searchable()
+                                                ->multiple()
                                     ])
                             ])
                             ->columnSpan(1)
@@ -103,6 +109,7 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('product_images'),
                 Tables\Columns\TextColumn::make('brand.name')
                     ->numeric()
                     ->sortable(),
@@ -115,13 +122,14 @@ class ProductResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('mrp')
                     ->numeric()
+                    ->prefix('')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('selling_price')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('buying_price')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('selling_price')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('buying_price')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),

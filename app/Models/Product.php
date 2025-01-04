@@ -7,8 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Product extends Model
 {
-    protected $fillable = ['brand_id', 'category_id', 'name', 'part_number', 'description', 'mrp', 'selling_price', 'buying_price', 'product_images'];
-    protected $casts = ["product_images" => "array"];
+    protected $fillable = ['brand_id', 'category_id', 'name', 'part_number', 'description', 'mrp', 'selling_price', 'buying_price', 'product_images', 'compatible_bike_ids'];
+    protected $casts = [
+        "product_images" => "array",
+        "compatible_bike_ids" => "array"
+    ];
 
     public function brand(): BelongsTo
     {
