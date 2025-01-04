@@ -12,6 +12,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Forms\Components\Image;
+use Filament\Forms\Components\Repeater;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProductResource extends Resource
@@ -63,9 +66,29 @@ class ProductResource extends Resource
                                     ->numeric(),
 
                             ]),
-                    ])
+                    ]),
+                Section::make('Product Images')
+                    ->schema([
+                        Forms\Components\FileUpload::make('product_images')
+                            ->label('Product Images')
+                            ->multiple()
+                            ->image()
+                            ->directory('product-images') // Directory where images are stored
+                            ->maxFiles(10)
+                            ->maxSize(2048)
+                            ->required()
+                            ->saveRelationshipsUsing(function ($component, $state, $record) {
+                                foreach ($state as $filePath) {
+                                    $record->images()->create([
+                                        'path' => $filePath,
+                                    ]);
+                                }
+                            }),
+                    ]),
             ]);
     }
+
+
 
     public static function table(Table $table): Table
     {
