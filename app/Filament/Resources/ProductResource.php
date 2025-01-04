@@ -6,6 +6,7 @@ use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -27,66 +28,74 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Section::make()
-                    ->schema([
-                        Forms\Components\Grid::make(2) // 2 columns grid
+                Group::make()
+                    ->schema([ 
+                        Group::make()
                             ->schema([
-                                Forms\Components\Select::make('brand_id')
-                                    ->relationship('brand', 'name')
-                                    ->searchable()
-                                    ->preload()
-                                    ->required(),
-                                Forms\Components\Select::make('category_id')
-                                    ->relationship('category', 'name')
-                                    ->searchable()
-                                    ->preload()
-                                    ->required(),
-                            ]),
-                        Forms\Components\Grid::make(2) // Another 2 columns grid
+                                Section::make('Product Details')
+                                    ->schema([
+                                        Forms\Components\Grid::make(2) // Another 2 columns grid
+                                            ->schema([
+                                                Forms\Components\TextInput::make('name')
+                                                    ->required()
+                                                    ->maxLength(255),
+                                                Forms\Components\TextInput::make('part_number')
+                                                    ->maxLength(255),
+                                            ]),
+                                        Forms\Components\RichEditor::make('description')
+                                            ->columnSpanFull(),
+                                    ]),
+                                Section::make('Product Images')
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('product_images')
+                                            ->label('Product Images')
+                                            ->multiple()
+                                            ->image()
+                                            ->directory('product-images') // Directory where images are stored
+                                            ->maxFiles(10)
+                                            ->maxSize(2048)
+                                            ->required()
+                                    ]),
+                            ])
+                            ->columnSpan(2),
+                        Group::make()
                             ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('part_number')
-                                    ->maxLength(255),
-                            ]),
-                        Forms\Components\RichEditor::make('description')
-                            ->columnSpanFull(), // Full width for the editor
-                        Forms\Components\Grid::make(3) // 3 columns for numeric fields
-                            ->schema([
-                                Forms\Components\TextInput::make('mrp')
-                                    ->label('MRP')
-                                    ->required()
-                                    ->numeric(),
-                                Forms\Components\TextInput::make('buying_price')
-                                    ->required()
-                                    ->numeric(),
-                                Forms\Components\TextInput::make('selling_price')
-                                    ->required()
-                                    ->numeric(),
-
-                            ]),
-                    ]),
-                Section::make('Product Images')
-                    ->schema([
-                        Forms\Components\FileUpload::make('product_images')
-                            ->label('Product Images')
-                            ->multiple()
-                            ->image()
-                            ->directory('product-images') // Directory where images are stored
-                            ->maxFiles(10)
-                            ->maxSize(2048)
-                            ->required()
-                            ->saveRelationshipsUsing(function ($component, $state, $record) {
-                                foreach ($state as $filePath) {
-                                    $record->images()->create([
-                                        'path' => $filePath,
-                                    ]);
-                                }
-                            }),
-                    ]),
-            ]);
+                                Section::make('Prices')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('mrp')
+                                            ->label('MRP')
+                                            ->required()
+                                            ->prefix('INR')
+                                            ->numeric(),
+                                        Forms\Components\TextInput::make('buying_price')
+                                            ->required()
+                                            ->prefix('INR')
+                                            ->numeric(),
+                                        Forms\Components\TextInput::make('selling_price')
+                                            ->required()
+                                            ->prefix('INR')
+                                            ->numeric(),
+                                    ]),
+                                Section::make('Associations')
+                                    ->schema([
+                                            Forms\Components\Select::make('brand_id')
+                                                ->relationship('brand', 'name')
+                                                ->searchable()
+                                                ->preload()
+                                                ->required(),
+                                            Forms\Components\Select::make('category_id')
+                                                ->relationship('category', 'name')
+                                                ->searchable()
+                                                ->preload()
+                                                ->required(),
+                                    ])
+                            ])
+                            ->columnSpan(1)
+                    ])
+                    ->columns(3)
+            ])->columns(0);
     }
+
 
 
 

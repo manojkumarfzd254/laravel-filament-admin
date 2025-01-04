@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('part_number')->nullable();
             $table->text('description')->nullable();
+            $table->jsonb('product_images')->nullable();
             $table->decimal('mrp', 10, 2);
             $table->decimal('selling_price', 10, 2);
             $table->decimal('buying_price', 10, 2);
