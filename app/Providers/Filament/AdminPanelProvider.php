@@ -81,6 +81,7 @@ class AdminPanelProvider extends PanelProvider
                     ]),
                 FilamentEditProfilePlugin::make()
                     ->setIcon('heroicon-o-user')
+                    ->setNavigationGroup('User Management')
                     ->shouldShowDeleteAccountForm(false)
             ])
             ->authMiddleware([
