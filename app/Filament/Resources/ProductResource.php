@@ -37,11 +37,14 @@ class ProductResource extends Resource
                             ->schema([
                                 Section::make('Product Details')
                                     ->schema([
-                                        Forms\Components\Grid::make(2) // Another 2 columns grid
-                                            ->schema([
-                                                Forms\Components\TextInput::make('name')
+                                        Forms\Components\TextInput::make('name')
                                                     ->required()
                                                     ->maxLength(255),
+                                        Forms\Components\Grid::make(2) // Another 2 columns grid
+                                            ->schema([
+                                                Forms\Components\TextInput::make('quantity')
+                                                    ->dehydrated()
+                                                    ->disabled(),
                                                 Forms\Components\TextInput::make('part_number')
                                                     ->maxLength(255),
                                             ]),
