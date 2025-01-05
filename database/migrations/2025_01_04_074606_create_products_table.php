@@ -25,6 +25,9 @@ return new class extends Migration
             $table->decimal('buying_price', 10, 2);
             $table->integer('quantity')->nullable();
             $table->timestamps();
+
+            $table->index('name');
+            $table->index('part_number');
         });
     }
 

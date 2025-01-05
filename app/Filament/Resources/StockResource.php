@@ -30,11 +30,12 @@ class StockResource extends Resource
                 Section::make()
                     ->schema([
                         Forms\Components\Select::make('product_id')
-                            ->relationship('product', 'name')
-                            ->searchable()
+                            ->relationship('product', 'name', fn($query) => $query->select(['id', 'name', 'part_number'])) // Ensure 'part_number' is available
+                            ->searchable(['name', 'part_number'])
                             ->columnSpan(1)
                             ->preload()
-                            ->required(),
+                            ->required()
+                            ->getOptionLabelFromRecordUsing(fn($record) => "({$record->part_number}) - {$record->name}"),
                         Forms\Components\TextInput::make('quantity')
                             ->required()
                             ->prefixicon('heroicon-s-square-3-stack-3d')
@@ -82,6 +83,7 @@ class StockResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
