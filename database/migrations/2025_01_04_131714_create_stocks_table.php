@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('quantity');
             $table->enum('operation', ['add', 'remove'])->default('add');
+            $table->text('description')->nullable();
+
             $table->index(['product_id']); // Index on product_id and deleted_at to optimize soft delete operations.
             $table->timestamps();
         });

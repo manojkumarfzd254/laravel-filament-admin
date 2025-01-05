@@ -129,12 +129,16 @@ class ProductResource extends Resource
                     ->numeric()
                     ->money('INR')
                     ->sortable(),
-                // Tables\Columns\TextColumn::make('selling_price')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('buying_price')
-                //     ->numeric()
-                //     ->sortable(),
+                Tables\Columns\BadgeColumn::make('quantity')
+                    ->label('Stocks')
+                    ->colors([
+                        'danger' => fn ($state) => $state <= 5,     // Red badge for stock <= 5
+                        'warning' => fn ($state) => $state > 5 && $state <= 10, // Yellow badge for stock > 5 and <= 10
+                        'success' => fn ($state) => $state > 10,   // Green badge for stock > 10
+                    ])
+                    ->formatStateUsing(function ($state) {
+                        return $state . ' units'; // Append 'units' for better readability
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),

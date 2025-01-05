@@ -6,6 +6,7 @@ use App\Filament\Resources\StockResource\Pages;
 use App\Filament\Resources\StockResource\RelationManagers;
 use App\Models\Stock;
 use Filament\Forms;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -39,6 +40,17 @@ class StockResource extends Resource
                             ->prefixicon('heroicon-s-square-3-stack-3d')
                             ->columnSpan(1)
                             ->numeric(),
+                        Forms\Components\Radio::make('operation')
+                            ->options([
+                                'add' => 'Add',
+                                'remove' => 'Remove',
+                            ])
+                            ->inline() // Display options inline
+                            ->required()
+                            ->default('add') // Default operation
+                            ->columnSpan(2),
+                        RichEditor::make('description')
+                            ->columnSpanFull(),
                     ])
                     ->columns(2)
             ]);
@@ -53,6 +65,15 @@ class StockResource extends Resource
                 Tables\Columns\TextColumn::make('quantity')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\BadgeColumn::make('operation')
+                    ->label('Operation')
+                    ->colors([
+                        'success' => 'add',    // Green badge for "add"
+                        'danger' => 'remove',  // Red badge for "remove"
+                    ])
+                    ->formatStateUsing(function ($state) {
+                        return ucfirst($state); // Capitalize the state for display
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
