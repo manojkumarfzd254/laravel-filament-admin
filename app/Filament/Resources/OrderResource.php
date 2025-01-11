@@ -93,6 +93,7 @@ class OrderResource extends Resource
                                             }),
                                         Forms\Components\TextInput::make('email')
                                             ->email()
+                                            ->reactive()
                                             ->disabled()
                                             ->maxLength(255),
 
@@ -123,6 +124,7 @@ class OrderResource extends Resource
                                 Section::make('Product Details')
                                     ->schema([
                                         Forms\Components\Repeater::make('products')
+                                        ->relationship('products')
                                             ->schema([
                                                 Forms\Components\Select::make('product_id')
                                                     ->options(function () {
@@ -211,6 +213,7 @@ class OrderResource extends Resource
             ])->columns(0);
     }
 
+    
     public static function table(Table $table): Table
     {
         return $table
@@ -221,34 +224,17 @@ class OrderResource extends Resource
                         return '#' . $state;
                     })
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('customer.name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('phone')
+                Tables\Columns\TextColumn::make('customer.phone_number')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('product.name')
-                    ->numeric()
-                    ->sortable(),
-
-                Tables\Columns\BadgeColumn::make('quantity')
-                    ->label('Stocks')
-                    ->colors([
-                        'success' => fn($state) => $state <= 5,     // Red badge for stock <= 5
-                        'success' => fn($state) => $state > 5 && $state <= 10, // Yellow badge for stock > 5 and <= 10
-                        'success' => fn($state) => $state > 10,   // Green badge for stock > 10
-                    ])
-                    ->formatStateUsing(function ($state) {
-                        return $state . ' units'; // Append 'units' for better readability
-                    }),
-                Tables\Columns\TextColumn::make('discount')
-                    ->numeric()
-                    ->money('inr')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('amount')
+             
+                Tables\Columns\TextColumn::make('total_amount')
                     ->numeric()
                     ->money('inr')
                     ->sortable(),
                 Tables\Columns\BadgeColumn::make('status')
-                    ->label('Operation')
+                    ->label('Status')
                     ->colors([
                         'success' => 'success',
                         'danger' => 'canceled',
@@ -272,7 +258,7 @@ class OrderResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -293,7 +279,7 @@ class OrderResource extends Resource
         return [
             'index' => Pages\ListOrders::route('/'),
             'create' => Pages\CreateOrder::route('/create'),
-            'edit' => Pages\EditOrder::route('/{record}/edit'),
+            'view' => Pages\ViewOrder::route('/{record}'),
         ];
     }
 }
