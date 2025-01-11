@@ -4,13 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends Model
 {
-    protected $fillable = ['name', 'email', 'phone', 'address', 'product_id', 'mrp', 'amount', 'quantity', 'discount', 'status', 'description'];
+    protected $fillable = ['customer_id', 'total_amount', 'status', 'description'];
 
-    public function product(): BelongsTo
+    public function products()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsToMany(Product::class, 'order_product')
+                    ->withPivot('quantity', 'amount', 'mrp', 'product_id')
+                    ->withTimestamps();
+    }
+
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
     }
 }

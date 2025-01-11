@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Order;
+use App\Models\OrderProduct;
 use App\Models\Stock;
 
 class OrderObserver
@@ -12,12 +13,15 @@ class OrderObserver
      */
     public function created(Order $order): void
     {
-        Stock::create([
-            'product_id' => $order->product_id,
-            'quantity' => $order->quantity,
-            'operation' => 'remove',
-            'description' => $order->description
-        ]);
+        $items = OrderProduct::where('order_id', $order->id)->get();
+        foreach ($items as $item) {
+            Stock::create([
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+                'operation' => 'remove',
+                'description' => $order->description
+            ]);
+        }
     }
 
     /**
