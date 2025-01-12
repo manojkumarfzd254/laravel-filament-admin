@@ -124,7 +124,8 @@ class OrderResource extends Resource
                                 Section::make('Product Details')
                                     ->schema([
                                         Forms\Components\Repeater::make('products')
-                                        ->relationship('products')
+                                        // ->relationship('products')
+                                        
                                             ->schema([
                                                 Forms\Components\Select::make('product_id')
                                                     ->options(function () {
@@ -258,6 +259,14 @@ class OrderResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\Action::make('download')
+                    ->label('Invoice')
+                    ->icon('heroicon-s-cloud-arrow-down')
+                    ->visible(fn (Order $record): bool => ! is_null($record->invoice_path))
+                    ->action(function (Order $record) {
+                        return response()->download(storage_path('app/public/' . $record->invoice_path));
+                    }),
+                // Tables\Actions\DeleteAction::make(),
                 // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
